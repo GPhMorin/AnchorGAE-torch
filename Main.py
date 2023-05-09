@@ -12,7 +12,7 @@ def main(args):
         [data, labels] = loader.load_MNIST_Test()
     else:
         [data, labels] = loader.load_data(args.datasetName)
-    device = torch.device('cuda' if torch.cuda.is_available() else "cpu")
+    device = torch.device('cpu')
     X = torch.Tensor(data)
     m = args.AnchorNum
     k = args.k0
