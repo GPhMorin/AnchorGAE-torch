@@ -20,7 +20,7 @@ def main(args):
 
     input_dim = data.shape[1]
     layers = None
-    layers = [input_dim, 256, 32]
+    layers = [input_dim, 16, 4]
     randomNum = random.sample(range(0, X.shape[0]), m)
     centroids = X[randomNum, :]
     regularization = torch.full(centroids.size(), 10 ** -10)

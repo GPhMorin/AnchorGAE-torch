@@ -39,7 +39,7 @@ def load_MNIST_Test():
     labels = np.reshape(labels, (labels.shape[0],))
     X = data.test_data
     X = X.detach().numpy()
-    X = X.astype(np.float)
+    X = X.astype(float)
     X /= np.max(X)
     X = X.reshape(-1, 784)
     return X, labels
