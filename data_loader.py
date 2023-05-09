@@ -23,7 +23,7 @@ def load_data(name):
         labels = data['Y']
         X = data['X']
     labels = np.reshape(labels, (labels.shape[0],))
-    X = X.astype(np.float)
+    X = X.astype(float)
     X /= np.max(X)
     return X, labels
 
