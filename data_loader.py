@@ -9,6 +9,7 @@ fashionMNIST = 'fashionMNIST_full'
 USPS = 'usps_all'
 segment = 'segment_uni'
 Isolet = 'Isolet'
+BALSAC = 'balsac'
 
 def load_data(name):
     path = './data/{}.mat'.format(name)
@@ -19,6 +20,9 @@ def load_data(name):
     elif (name == fashionMNIST):
         labels = data['labels_full']
         X = data['data_full']
+    elif (name == BALSAC):
+        labels = data['Y']
+        X = data['X'].todense()
     else:
         labels = data['Y']
         X = data['X']

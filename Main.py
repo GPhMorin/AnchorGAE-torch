@@ -6,13 +6,16 @@ import tools
 import argparse
 from model import GAE
 
+from tqdm import tqdm
+import numpy as np
+
 def main(args):
     warnings.filterwarnings("ignore")
     if args.datasetName == 'mnist_test':
         [data, labels] = loader.load_MNIST_Test()
     else:
         [data, labels] = loader.load_data(args.datasetName)
-    device = torch.device('cpu')
+    device = torch.device('cuda' if torch.cuda.is_available() else "cpu")
     X = torch.Tensor(data)
     m = args.AnchorNum
     k = args.k0
@@ -20,13 +23,13 @@ def main(args):
 
     input_dim = data.shape[1]
     layers = None
-    layers = [input_dim, 16, 4]
+    layers = [input_dim, 256, 32]
     randomNum = random.sample(range(0, X.shape[0]), m)
     centroids = X[randomNum, :]
     regularization = torch.full(centroids.size(), 10 ** -10)
     centroids = centroids+regularization
     iterNum = 25
-    while (iterNum > 0):
+    for _ in tqdm(range(0, 25), desc="Preparing the data"):
         f = tools.distance2(X.t(), centroids.t(), square=False)
         B = tools.getB_via_CAN(f, k)
         centroids = tools.recons_c2(m, B, X, X.shape[1])
@@ -38,7 +41,7 @@ def main(args):
 
     print('SC --- ACC: %5.4f, NMI: %5.4f' % (ACC, NMI))
 
-
+    np.save('emb.npy', gae.embedding.cpu().detach().numpy())
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='AnchorGAE')
